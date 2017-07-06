@@ -43,7 +43,7 @@ public class MyAdapter extends BaseAdapter
     @Override
     public View getView(int i, View view, ViewGroup viewGroup)
     {
-        Collections.reverse(spareItemList);
+//        Collections.reverse(spareItemList);
         LayoutInflater li=(LayoutInflater)context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
         View v=li.inflate(R.layout.list_items,null);
         TextView viewIdNo=v.findViewById(R.id.view_id_no);

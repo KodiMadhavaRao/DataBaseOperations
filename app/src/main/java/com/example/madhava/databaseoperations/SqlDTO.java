@@ -10,6 +10,7 @@ import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,9 +31,16 @@ public class SqlDTO {
         db=sqlDatabase;
     }
 
+    /**
+     * Adding item to Sqlite dataBase
+     * @param sitemName
+     * @param litemPrice
+     */
     public void addItem(String sitemName, long litemPrice)
     {
         SQLiteDatabase database=db.getWritableDatabase();
+        //Handy in case of large database use Android methods
+        //Never write raw querys
         ContentValues contentValues=new ContentValues();
         contentValues.put(clSQLDatabase.ITEM_NAME,sitemName);
         contentValues.put(clSQLDatabase.PRICE,litemPrice);
@@ -42,37 +50,62 @@ public class SqlDTO {
     }
     public void deleteItem(int id)
     {
-
+        //// TODO: 7/6/2017
     }
     public int getItemByName(String itemName)
     {
+
 //        String[] args={itemName};
-        int pricedb=0;
+        int pricedb[]=null;
+        int iddb[];
+        String itemNamedb[];
+        TextView tv;
         SQLiteDatabase sqLiteDatabase=db.getReadableDatabase();
-        Cursor cursor=sqLiteDatabase.query(clSQLDatabase.TABLE_NAME
-                , new String[]{clSQLDatabase.ID,clSQLDatabase.ITEM_NAME,clSQLDatabase.PRICE}
-                , clSQLDatabase.ITEM_NAME +" =?"
-                , new String[]{itemName}
-                , null, null, null);
+/*        Cursor cursor=sqLiteDatabase.query(clSQLDatabase.TABLE_NAME //Table Name
+                , new String[]{clSQLDatabase.ID,clSQLDatabase.ITEM_NAME,clSQLDatabase.PRICE} //Items that you want sqlite to return
+                , clSQLDatabase.ITEM_NAME +" =?"    //SQLiteDirectCursorDriver: SELECT id, item_name, price FROM spareparts WHERE item_name =?
+                , new String[]{itemName}            //while debugging i got this item_name = > < max operations can be performed here
+                ,clSQLDatabase.ITEM_NAME ,null,null);*/
+
+        Cursor cursor=sqLiteDatabase.query(clSQLDatabase.TABLE_NAME //Table Name
+                , new String[]{clSQLDatabase.ID,clSQLDatabase.ITEM_NAME,clSQLDatabase.PRICE} //Items that you want sqlite to return
+                ,clSQLDatabase.ITEM_NAME +"= ?"  //SQLiteDirectCursorDriver: SELECT id, item_name, price FROM spareparts WHERE item_name =?
+                , new String[]{itemName}         //while debugging i got this item_name = > < max operations can be performed here
+                ,null,null,clSQLDatabase.ID);
         Log.i("Cursor length",""+cursor.getCount());
+//
+//        String sqlQuery="select * from "+clSQLDatabase.TABLE_NAME+" where "+clSQLDatabase.ITEM_NAME+" = '"+itemName+"'";
+//        Log.i("Query",""+sqlQuery);
+//        Cursor cursor=sqLiteDatabase.rawQuery(sqlQuery,null);
         if(cursor!=null && cursor.moveToFirst())
-        {
-            TextView tv;
-            int iddb=cursor.getInt(0);
-            String itemNamedb=cursor.getString(1);
-            pricedb=cursor.getInt(2);
-            Log.i("Searched values ",""+iddb+" "+itemNamedb+""+pricedb);
+        { int i=0;
+            pricedb=new int[cursor.getCount()];
+            iddb=new int[cursor.getCount()];
+            itemNamedb=new String[cursor.getCount()];
+           do {
+               iddb[i]=cursor.getInt(0);
+               itemNamedb[i]=cursor.getString(1);
+               pricedb[i]=cursor.getInt(2);
+               Log.i("Searched values ",""+iddb[i]+" "+itemNamedb[i]+""+pricedb[i]);
+            i++;
+           }while (cursor.moveToNext());
+
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
                View view= LayoutInflater.from(context).inflate(R.layout.item_view_dialog,null);
                 builder.setView(view);
-            tv=(TextView)view.findViewById(R.id.dialog_textview);
-            tv.setText("Id:"+iddb+"\nItem Name:"+itemNamedb+"\nPrice:"+pricedb);
+            ListView listView=view.findViewById(R.id.dialog_listview);
+            AlertAdapter alertAdapter=new AlertAdapter(context,iddb,itemNamedb,pricedb);
+            listView.setAdapter(alertAdapter);
+//            tv=(TextView)view.findViewById(R.id.dialog_textview);
+//            tv.setText("Id:"+iddb+"\nItem Name:"+itemNamedb+"\nPrice:"+pricedb);
             builder.setTitle("Product Info");
             AlertDialog alertDialog = builder.create();
             alertDialog.getWindow().setLayout(600, 400); //Controlling width and height.
             alertDialog.show();
+
         }
-        return pricedb;
+        return pricedb[0];
+
     }
     public  ArrayList<data> getAllItems()
     {
@@ -80,7 +113,7 @@ public class SqlDTO {
         SQLiteDatabase sqLiteDatabase=db.getReadableDatabase();
         Cursor cursor=sqLiteDatabase.query(clSQLDatabase.TABLE_NAME
         ,new String[]{clSQLDatabase.ID,clSQLDatabase.ITEM_NAME,clSQLDatabase.PRICE}
-        ,null
+        ,null //same as above but null will return all values
         ,null
         ,null
         ,null
@@ -88,7 +121,8 @@ public class SqlDTO {
         if (cursor!=null&&cursor.moveToFirst())
         {
            do {
-
+            //Assume Cursor like database  point to first values
+               //and fetch column values with 0,1,2,.....
                arrayList.add(new data(cursor.getInt(0),cursor.getString(1),cursor.getInt(2)));
            }while (cursor.moveToNext());
         }

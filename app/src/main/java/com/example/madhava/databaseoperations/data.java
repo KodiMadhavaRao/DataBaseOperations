@@ -4,6 +4,10 @@ package com.example.madhava.databaseoperations;
  * Created by madhava on 7/6/2017.
  */
 
+/**
+ * Getter setters
+ * We have used custom this objet in array list to store values
+ */
 public class data
 {
 

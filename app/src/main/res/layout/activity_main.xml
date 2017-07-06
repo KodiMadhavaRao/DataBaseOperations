@@ -63,8 +63,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:id="@+id/update_list"
-        android:text="Update list"
+        android:id="@+id/close_list"
+        android:text="close list"
         android:textAllCaps="false"/>
 </LinearLayout>
     <ListView
