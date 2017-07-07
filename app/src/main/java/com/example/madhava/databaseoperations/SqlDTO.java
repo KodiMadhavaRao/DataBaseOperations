@@ -1,12 +1,11 @@
 package com.example.madhava.databaseoperations;
 
-import android.app.AlertDialog;
+
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Build;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-
 
 /**
  * Created by madhava on 7/5/2017.
@@ -56,11 +52,12 @@ public class SqlDTO {
     {
 
 //        String[] args={itemName};
-        int pricedb[]=null;
+        int pricedb[]=new int[]{25};
         int iddb[];
         String itemNamedb[];
         TextView tv;
-        SQLiteDatabase sqLiteDatabase=db.getReadableDatabase();
+        SQLiteDatabase
+                sqLiteDatabase=db.getReadableDatabase();
 /*        Cursor cursor=sqLiteDatabase.query(clSQLDatabase.TABLE_NAME //Table Name
                 , new String[]{clSQLDatabase.ID,clSQLDatabase.ITEM_NAME,clSQLDatabase.PRICE} //Items that you want sqlite to return
                 , clSQLDatabase.ITEM_NAME +" =?"    //SQLiteDirectCursorDriver: SELECT id, item_name, price FROM spareparts WHERE item_name =?
@@ -104,10 +101,20 @@ public class SqlDTO {
             alertDialog.show();
 
         }
-        return pricedb[0];
+
+//        boolean isvalue=pricedb.equals(null);
+//       int result=isvalue?R.id.nodata:R.id.success;
+//        return result;
+        if(pricedb[0]==25)
+        {
+            return R.id.nodata;
+        }
+        else {
+            return R.id.success;
+        }
 
     }
-    public  ArrayList<data> getAllItems()
+    public ArrayList<data> getAllItems()
     {
         ArrayList<data> arrayList=new ArrayList<>();
         SQLiteDatabase sqLiteDatabase=db.getReadableDatabase();

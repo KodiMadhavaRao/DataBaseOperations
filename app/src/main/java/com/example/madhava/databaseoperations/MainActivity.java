@@ -92,31 +92,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.view_item :
-                final AlertDialog.Builder alertDialogBuilder=new AlertDialog.Builder(this);
-                LayoutInflater layoutInflater=this.getLayoutInflater();
-                view1=layoutInflater.inflate(R.layout.dialogcustom,null);
-                alertDialogBuilder.setView(view1);
-
-                sqlDTO=new SqlDTO(MainActivity.this,sqlDatabase);
-                alertDialogBuilder.setTitle("Search By Item Name");
-                alertDialogBuilder.setPositiveButton("Search", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogEdit=view1.findViewById(R.id.dialog_edit_text);
-                        final String itemid=dialogEdit.getText().toString().trim();
-                        price=sqlDTO.getItemByName(itemid);
-
-//                        Toast.makeText(MainActivity.this, ""+price, Toast.LENGTH_SHORT).show();
-                    }
-                });
-                alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                    }
-                });
-                AlertDialog alertDialog=alertDialogBuilder.create();
-                alertDialog.show();
+                mmAlertDialog("Enter Item Name");
+//                final AlertDialog.Builder alertDialogBuilder=new AlertDialog.Builder(this);
+//                LayoutInflater layoutInflater=this.getLayoutInflater();
+//                view1=layoutInflater.inflate(R.layout.dialogcustom,null);
+//                alertDialogBuilder.setView(view1);
+//
+//                sqlDTO=new SqlDTO(MainActivity.this,sqlDatabase);
+//                alertDialogBuilder.setTitle("Search By Item Name");
+//                alertDialogBuilder.setPositiveButton("Search", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//                        dialogEdit=view1.findViewById(R.id.dialog_edit_text);
+//                        final String itemid=dialogEdit.getText().toString().trim();
+//                        price=sqlDTO.getItemByName(itemid);
+//
+//
+//                    }
+//                });
+//                alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//
+//                    }
+//                });
+//                AlertDialog alertDialog=alertDialogBuilder.create();
+//                alertDialog.show();
+//                if(price==R.id.nodata?showAlerAgain():alertDialog.dismiss());
                 break;
             case  R.id.view_all_items:
                 SqlDTO sqldto=new SqlDTO(MainActivity.this,sqlDatabase);
@@ -137,4 +139,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
     }
+    public void mmAlertDialog(final String hint)
+    {
+        final AlertDialog.Builder alertDialogBuilder=new AlertDialog.Builder(this);
+        LayoutInflater layoutInflater=this.getLayoutInflater();
+        view1=layoutInflater.inflate(R.layout.dialogcustom,null);
+        alertDialogBuilder.setView(view1);
+
+        sqlDTO=new SqlDTO(MainActivity.this,sqlDatabase);
+        alertDialogBuilder.setTitle(""+hint);
+        alertDialogBuilder.setPositiveButton("Search", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogEdit=view1.findViewById(R.id.dialog_edit_text);
+//                dialogEdit.setHint(hint);
+                final String itemid=dialogEdit.getText().toString().trim();
+                price=sqlDTO.getItemByName(itemid);
+                if (price==R.id.nodata)
+                {
+                     mmAlertDialog("No data found!Search By item id");
+                }
+            }
+        });
+        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        AlertDialog alertDialog=alertDialogBuilder.create();
+        alertDialog.show();
+
+    }
+
+
+
+
 }

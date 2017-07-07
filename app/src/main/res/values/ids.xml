@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="nodata" type="id">zxvz</item>
+    <item name="success" type="id" >wrhd</item>
 </resources>
