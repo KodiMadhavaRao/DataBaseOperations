@@ -52,7 +52,7 @@ public class SqlDTO {
     {
 
 //        String[] args={itemName};
-        int pricedb[]=new int[]{25};
+        int pricedb[]=null;
         int iddb[];
         String itemNamedb[];
         TextView tv;
@@ -105,7 +105,7 @@ public class SqlDTO {
 //        boolean isvalue=pricedb.equals(null);
 //       int result=isvalue?R.id.nodata:R.id.success;
 //        return result;
-        if(pricedb[0]==25)
+        if(pricedb==null || pricedb.length==0)
         {
             return R.id.nodata;
         }
