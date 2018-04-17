@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/DataBaseOperations.iml" filepath="$PROJECT_DIR$/DataBaseOperations.iml" />
+      <module fileurl="file://C:\Users\J.yugandhar\Downloads\madhav\DataBaseOperations\DataBaseOperations.iml" filepath="C:\Users\J.yugandhar\Downloads\madhav\DataBaseOperations\DataBaseOperations.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Users\J.yugandhar\Downloads\madhav\DataBaseOperations\app\app.iml" filepath="C:\Users\J.yugandhar\Downloads\madhav\DataBaseOperations\app\app.iml" />
     </modules>
   </component>
 </project>
